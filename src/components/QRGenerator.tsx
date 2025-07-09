@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import QRCodeStyling from 'qr-code-styling';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -7,12 +8,11 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Download, Upload, Palette, Settings, Zap, QrCode, Sparkles } from 'lucide-react';
+import { Download, Upload, Palette, Settings, Zap, QrCode, Sparkles, AlertCircle } from 'lucide-react';
 import { ColorPicker } from './ColorPicker';
 import { StyleSelector } from './StyleSelector';
 import { PresetTemplates } from './PresetTemplates';
 import { toast } from '@/hooks/use-toast';
-import heroImage from '@/assets/qr-hero.jpg';
 
 const QRGenerator = () => {
   const [qrData, setQrData] = useState('https://example.com');
@@ -48,11 +48,24 @@ const QRGenerator = () => {
   const qrCodeRef = useRef<QRCodeStyling | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Validate and format URL
+  const formatQRData = (data: string) => {
+    if (!data.trim()) return 'https://example.com';
+    
+    // If it looks like a URL but doesn't have protocol, add https://
+    if (data.includes('.') && !data.startsWith('http://') && !data.startsWith('https://') && !data.includes('@') && !data.startsWith('tel:') && !data.startsWith('sms:')) {
+      return `https://${data}`;
+    }
+    
+    return data;
+  };
+
   // Initialize QR code
   useEffect(() => {
+    const formattedData = formatQRData(qrData);
     const qr = new QRCodeStyling({
       ...qrConfig,
-      data: qrData,
+      data: formattedData,
       image: logoImage || undefined,
     });
     
@@ -67,9 +80,10 @@ const QRGenerator = () => {
   // Update QR code when config changes
   useEffect(() => {
     if (qrCodeRef.current) {
+      const formattedData = formatQRData(qrData);
       qrCodeRef.current.update({
         ...qrConfig,
-        data: qrData,
+        data: formattedData,
         image: logoImage || undefined,
       });
     }
@@ -116,39 +130,29 @@ const QRGenerator = () => {
     });
   };
 
+  const testQR = () => {
+    const formattedData = formatQRData(qrData);
+    toast({
+      title: "QR Code Data",
+      description: `Your QR code contains: ${formattedData}`
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-subtle">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        />
-        <div className="relative max-w-7xl mx-auto px-6 py-16 text-center">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <QrCode className="h-12 w-12 text-primary" />
-            <Sparkles className="h-8 w-8 text-qr-secondary" />
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <QrCode className="h-8 w-8 text-primary" />
+            <Sparkles className="h-6 w-6 text-qr-secondary" />
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-qr bg-clip-text text-transparent mb-6">
-            Stylish QR Generator
+          <h1 className="text-4xl font-bold bg-gradient-qr bg-clip-text text-transparent mb-4">
+            QR Code Generator
           </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Create beautiful, customizable QR codes with logos, gradients, and advanced styling options. 
-            Perfect for businesses, events, and personal projects.
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Create beautiful, customizable QR codes with logos and advanced styling options.
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button variant="gradient" size="lg" className="shadow-glow">
-              <Zap className="h-5 w-5 mr-2" />
-              Start Creating
-            </Button>
-            <Button variant="outline" size="lg">
-              View Examples
-            </Button>
-          </div>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 pb-16">
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Left Panel - Controls */}
@@ -170,7 +174,14 @@ const QRGenerator = () => {
                     placeholder="Enter URL, text, or any data you want to encode..."
                     className="min-h-[100px] mt-2"
                   />
+                  <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
+                    <AlertCircle className="h-4 w-4" />
+                    <span>Tip: URLs without http:// will automatically get https:// added</span>
+                  </div>
                 </div>
+                <Button onClick={testQR} variant="outline" size="sm" className="w-full">
+                  Test QR Data
+                </Button>
               </CardContent>
             </Card>
 

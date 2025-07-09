@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Project
 
 ## Project info
@@ -49,3 +50,6 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+=======
+# QRism
+>>>>>>> 8ac6ef0fe639f53662d2b2ccf1042fe5de777b59

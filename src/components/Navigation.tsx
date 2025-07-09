@@ -17,7 +17,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <QrCode className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold">QR Stylish</span>
+            <span className="text-xl font-bold">QRism</span>
           </div>
           
           <div className="hidden md:flex items-center gap-6">

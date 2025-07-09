@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { QrCode, Sparkles, Zap, Download, Palette, Shield, Star, Users, ArrowRight, CheckCircle } from 'lucide-react';
 import Navigation from './Navigation';
-import heroImage from '@/assets/qr-hero.jpg';
 
 const LandingPage = () => {
   const scrollToGenerator = () => {
@@ -19,17 +18,13 @@ const LandingPage = () => {
       
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-20">
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        />
         <div className="relative max-w-7xl mx-auto px-6 py-20 text-center">
           <div className="flex items-center justify-center gap-3 mb-6">
             <QrCode className="h-16 w-16 text-primary" />
             <Sparkles className="h-12 w-12 text-qr-secondary" />
           </div>
           <h1 className="text-6xl md:text-7xl font-bold bg-gradient-qr bg-clip-text text-transparent mb-6">
-            Stylish QR Generator
+            QRism Generator
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
             Create beautiful, customizable QR codes with logos, gradients, and advanced styling options. 
@@ -283,7 +278,7 @@ const LandingPage = () => {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <QrCode className="h-8 w-8 text-primary" />
-                <span className="text-xl font-bold">QR Stylish</span>
+                <span className="text-xl font-bold">QRism</span>
               </div>
               <p className="text-muted-foreground">
                 The most advanced QR code generator with beautiful customization options.
@@ -322,7 +317,7 @@ const LandingPage = () => {
           </div>
           
           <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 QR Stylish. All rights reserved.</p>
+            <p>&copy; 2024 QRism. All rights reserved.</p>
           </div>
         </div>
       </footer>
